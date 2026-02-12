@@ -42,6 +42,11 @@ class _GameScreenState extends State<GameScreen> {
         
         var matches = gameBoard.findMatches();
         int removed = gameBoard.removeMatches(matches);
+        
+        if (removed > 0) {
+          gameBoard.applyGravity();
+        }
+
         score += removed * 10;
 
         selectedRow = null;
