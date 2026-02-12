@@ -39,6 +39,11 @@ class _GameScreenState extends State<GameScreen> {
             gameBoard.board[selectedRow!][selectedCol!];
         gameBoard.board[selectedRow!][selectedCol!] = temp;
 
+        
+        var matches = gameBoard.findMatches();
+        int removed = gameBoard.removeMatches(matches);
+        score += removed * 10;
+
         selectedRow = null;
         selectedCol = null;
       }
