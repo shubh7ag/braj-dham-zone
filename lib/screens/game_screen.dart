@@ -12,6 +12,9 @@ class _GameScreenState extends State<GameScreen> {
   final GameBoard gameBoard = GameBoard();
   int score = 0;
 
+  int? selectedRow;
+  int? selectedCol;
+
   Color getTileColor(int value) {
     List<Color> colors = [
       Colors.orange,
@@ -22,6 +25,24 @@ class _GameScreenState extends State<GameScreen> {
       Colors.yellow,
     ];
     return colors[value];
+  }
+
+  void onTileTap(int row, int col) {
+    setState(() {
+      if (selectedRow == null) {
+        selectedRow = row;
+        selectedCol = col;
+      } else {
+        // Swap tiles
+        int temp = gameBoard.board[row][col];
+        gameBoard.board[row][col] =
+            gameBoard.board[selectedRow!][selectedCol!];
+        gameBoard.board[selectedRow!][selectedCol!] = temp;
+
+        selectedRow = null;
+        selectedCol = null;
+      }
+    });
   }
 
   @override
@@ -53,11 +74,20 @@ class _GameScreenState extends State<GameScreen> {
                 int row = index ~/ GameBoard.gridSize;
                 int col = index % GameBoard.gridSize;
 
-                return Container(
-                  margin: const EdgeInsets.all(2),
-                  decoration: BoxDecoration(
-                    color: getTileColor(gameBoard.board[row][col]),
-                    borderRadius: BorderRadius.circular(8),
+                bool isSelected =
+                    row == selectedRow && col == selectedCol;
+
+                return GestureDetector(
+                  onTap: () => onTileTap(row, col),
+                  child: Container(
+                    margin: const EdgeInsets.all(2),
+                    decoration: BoxDecoration(
+                      color: getTileColor(gameBoard.board[row][col]),
+                      borderRadius: BorderRadius.circular(8),
+                      border: isSelected
+                          ? Border.all(color: Colors.white, width: 3)
+                          : null,
+                    ),
                   ),
                 );
               },
