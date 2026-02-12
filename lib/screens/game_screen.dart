@@ -10,6 +10,7 @@ class GameScreen extends StatefulWidget {
 
 class _GameScreenState extends State<GameScreen> {
   final GameBoard gameBoard = GameBoard();
+  int targetScore = 500;
 
   int score = 0;
   int movesLeft = 20;
@@ -108,6 +109,27 @@ class _GameScreenState extends State<GameScreen> {
                 fontWeight: FontWeight.bold,
               ),
             ),
+          if (score >= targetScore)
+            const Text(
+            "Radhe Radhe! You Win 🎉",
+            style: TextStyle(
+              fontSize: 24,
+              color: Colors.green,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              setState(() {
+                gameBoard.generateBoard();
+                score = 0;
+                movesLeft = 20;
+              });
+            },
+            child: const Text("Restart Game"),
+          ),
+
+
 
           Expanded(
             child: GridView.builder(
